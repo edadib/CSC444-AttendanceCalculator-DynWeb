@@ -1,0 +1,42 @@
+.navbar {
+  overflow: hidden;
+  background-color: gainsboro;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.navbar a:hover {
+  background-color: grey;
+  color: white;
+}
+
+.active {
+  background-color: blueviolet;
+  color: white;
+}
+
+.main {
+  padding: 16px;
+  margin-top: 30px;
+  height: 1500px; /* Used in this example to enable scrolling */
+}
+.homepage {
+    text-align: center
+}
+.login {
+	margin-top: 150px;
+}
+.add {
+	margin-top: 100px;
+}
