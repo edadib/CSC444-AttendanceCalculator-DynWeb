@@ -8,6 +8,7 @@ public class StaffBean {
 	String email;
 	String address;
 	String password;
+	String grade;
 	
 	public String getId() {
 		return id;
@@ -50,6 +51,12 @@ public class StaffBean {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getGrade() {
+		return grade;
+	}
+	public void setGrade(String grade) {
+		this.grade = grade;
 	}
 	
 }
