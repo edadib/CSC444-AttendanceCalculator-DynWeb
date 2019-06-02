@@ -38,6 +38,9 @@ pageEncoding="ISO-8859-1"%>
 				PASSWORD :<br>
 				<input type="password" name="password" >
 				<br><br>
+				LEVEL :
+				<input type="text" name="level" >
+				<br><br>
 				<input type="submit" value="Add">
 				<input type="reset" value="Reset">
 			</form>
