@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import meylis.model.StaffBean;
 import meylis.connection.StaffConnection;
 import meylis.model.StaffBean;
 
@@ -19,7 +18,7 @@ public class StaffDAO {
 	static PreparedStatement ps=null;
 	static Statement stmt=null;
 	int age;
-	String id, name, department, email, address, password;
+	String id, name, department, email, password, address, grade;
 	
 	
 	public void add(StaffBean bean){
@@ -30,17 +29,19 @@ public class StaffDAO {
 		email = bean.getEmail();
 		address = bean.getAddress();
 		password = bean.getPassword();
+		grade = bean.getGrade();
 		
 		try {
 			currentCon = StaffConnection.getConnection();
-			ps=currentCon.prepareStatement("insert into staff(id,name,email,department,age,password,address)values(?,?,?,?,?,?,?)");
+			ps=currentCon.prepareStatement("insert into staff(id,name,age,department,email,address,password,grade)values(?,?,?,?,?,?,?,?)");
 			ps.setString(1,id);
 			ps.setString(2,name);
-			ps.setString(3,email);
+			ps.setInt(3,age);
 			ps.setString(4,department);
-			ps.setInt(5,age);
-			ps.setString(6,password);
-			ps.setString(7,address);
+			ps.setString(5,email);			
+			ps.setString(6,address);
+			ps.setString(7,password);
+			ps.setString(8,grade);
 			ps.executeUpdate();
 		}
 		catch (Exception ex) {
@@ -64,32 +65,31 @@ public class StaffDAO {
 		}
 		}
 	
-	/*public void deleteProduct(int productId) {
+	public void deleteStaff(String id) {
 	    try {
-	    	currentCon = ConnectionManager.getConnection();
+	    	currentCon = StaffConnection.getConnection();
 	    	ps=currentCon.prepareStatement("delete from STAFF where Id=?");
-	        ps.setInt(1, Id);
+	        ps.setString(1, id);
 	        ps.executeUpdate();
-
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 	}
 	
-	public void updateProduct(ProductBean bean) {
-
-		productId = bean.getProductId();
-		productName = bean.getProductName();
-		price = bean.getPrice();
-		quantity = bean.getQuantity();
-		rating = bean.getRating();
-		description = bean.getDescription();
+	public void updateProduct(StaffBean bean) {
+		id = bean.getId();
+		name = bean.getName();
+		department = bean.getDepartment();
+		age = bean.getAge();
+		email = bean.getEmail();
+		address= bean.getAddress();
+		password= bean.getPassword();
+		grade= bean.getGrade();
 		
-		String searchQuery = "UPDATE product SET productName= '" + productName + "', price='" + price + "', quantity='" + quantity + "', rating='" + rating + "', description='" + description + "' WHERE productId= '" + productId + "'";
+		String searchQuery = "UPDATE staff SET name= '" + name + "', department='" + department+ "', age='" + age + "', email='" + email + "', address='" + address + "', password='" + password + "', grade='" + grade + "' WHERE id= '" + id + "'";
 		
 		try {
-
-	        currentCon = ConnectionManager.getConnection();
+	        currentCon = StaffConnection.getConnection();
 	        stmt = currentCon.createStatement();
 	        stmt.executeUpdate(searchQuery);
 	        
@@ -98,39 +98,39 @@ public class StaffDAO {
 	    }
 	}
 	
-	public static List<ProductBean> getAllProduct() {
-	    List<ProductBean> products = new ArrayList<ProductBean>();
+	public static List<StaffBean> getAllStaff() {
+	    List<StaffBean> staff = new ArrayList<StaffBean>();
 	    try {
-	    	currentCon = ConnectionManager.getConnection();
+	    	currentCon = StaffConnection.getConnection();
 	    	stmt = currentCon.createStatement();
-	        ResultSet rs = stmt.executeQuery("select * from product");
+	        ResultSet rs = stmt.executeQuery("select * from staff");
 	        
 	        while (rs.next()) {
-	            ProductBean product = new ProductBean();
-	            product.setProductId(rs.getInt("productId"));
-	            product.setProductName(rs.getString("productName"));
-	            product.setPrice(rs.getDouble("price"));
-	            product.setQuantity(rs.getInt("quantity"));
-	            product.setRating(rs.getInt("rating"));
-	            product.setDescription(rs.getString("description"));
-	            products.add(product);
+	            StaffBean s = new StaffBean();
+	            s.setId(rs.getString("id"));
+	            s.setName(rs.getString("name"));
+				s.setAge(rs.getInt("age"));
+				s.setDepartment(rs.getString("department"));
+				s.setEmail(rs.getString("email"));
+				s.setAddress(rs.getString("address"));
+				s.setPassword(rs.getString("password"));
+				s.setGrade(rs.getString("grade"));
+	            staff.add(s);
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
-
-	    return products;
+	    return staff;
 	}
 	
-	public ProductBean getProductById(int productId) {
-		ProductBean product = new ProductBean();
+	/*public StaffBean getProductById(int productId) {
+		StaffBean product = new StaffBean();
 	    try {
 	    	currentCon = ConnectionManager.getConnection();
 	        ps=currentCon.prepareStatement("select * from product where productId=?");
 	        
 	        ps.setInt(1, productId);
 	        ResultSet rs = ps.executeQuery();
-
 	        if (rs.next()) {	            
 	            product.setProductId(rs.getInt("productId"));
 	            product.setProductName(rs.getString("productName"));
@@ -142,7 +142,6 @@ public class StaffDAO {
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
-
 	    return product;
 	}*/
 }
