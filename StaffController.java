@@ -40,7 +40,7 @@ public class StaffController extends HttpServlet {
         	request.setAttribute("staff", d.getAllStaff());
         }
         if (action.equalsIgnoreCase("delete")){
-    	    String id = (request.getParameter("id"));
+    	    String id = (request.getParameter("Id"));
             d.deleteStaff(id);
             forward = LIST;
             request.setAttribute("staff", d.getAllStaff());    
