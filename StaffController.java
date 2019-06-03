@@ -67,11 +67,7 @@ public class StaffController extends HttpServlet {
 		if(Id == null || Id.isEmpty()){
 			d.add(staff);
 		}
-	    /*else if(Id ){
-	         staff.setId(Id);
-	         dao.updateStaff(staff);
-	     }*/
-	     response.sendRedirect("listStaff.jsp");
+	    response.sendRedirect("listStaff.jsp");
 	 }
 
 	}
