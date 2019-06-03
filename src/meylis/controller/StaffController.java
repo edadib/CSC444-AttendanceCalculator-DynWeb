@@ -39,6 +39,12 @@ public class StaffController extends HttpServlet {
         	forward = LIST;
         	request.setAttribute("staff", d.getAllStaff());
         }
+        if (action.equalsIgnoreCase("delete")){
+    	    String id = (request.getParameter("Id"));
+            d.deleteStaff(id);
+            forward = LIST;
+            request.setAttribute("staff", d.getAllStaff());    
+    }
 
         RequestDispatcher view = request.getRequestDispatcher(forward);
         view.forward(request, response);
@@ -61,11 +67,7 @@ public class StaffController extends HttpServlet {
 		if(Id == null || Id.isEmpty()){
 			d.add(staff);
 		}
-	    /*else if(Id ){
-	         staff.setId(Id);
-	         dao.updateStaff(staff);
-	     }*/
-	     response.sendRedirect("listStaff.jsp");
+	    response.sendRedirect("listStaff.jsp");
 	 }
 
 	}
