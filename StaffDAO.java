@@ -1,6 +1,7 @@
 package meylis.dao;
 
 import java.sql.Connection;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import meylis.connection.StaffConnection;
+import meylis.connection.ConnectionManager;
 import meylis.model.StaffBean;
 
 public class StaffDAO {
@@ -32,7 +33,7 @@ public class StaffDAO {
 		grade = bean.getGrade();
 		
 		try {
-			currentCon = StaffConnection.getConnection();
+			currentCon = ConnectionManager.getConnection();
 			ps=currentCon.prepareStatement("insert into staff(id,name,age,department,email,address,password,grade)values(?,?,?,?,?,?,?,?)");
 			ps.setString(1,id);
 			ps.setString(2,name);
@@ -63,8 +64,8 @@ public class StaffDAO {
 				currentCon = null;
 			}
 		}
-		}
-	
+	}
+
 	public void deleteStaff(String id) {
 	    try {
 	    	currentCon = StaffConnection.getConnection();
@@ -99,49 +100,121 @@ public class StaffDAO {
 	}
 	
 	public static List<StaffBean> getAllStaff() {
-	    List<StaffBean> staff = new ArrayList<StaffBean>();
-	    try {
-	    	currentCon = StaffConnection.getConnection();
-	    	stmt = currentCon.createStatement();
-	        ResultSet rs = stmt.executeQuery("select * from staff");
-	        
-	        while (rs.next()) {
-	            StaffBean s = new StaffBean();
-	            s.setId(rs.getString("id"));
-	            s.setName(rs.getString("name"));
+		List<StaffBean> staff = new ArrayList<StaffBean>();
+		try {
+			currentCon = ConnectionManager.getConnection();
+			stmt = currentCon.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from staff");
+
+			while (rs.next()) {
+				StaffBean s = new StaffBean();
+				s.setId(rs.getString("id"));
+				s.setName(rs.getString("name"));
 				s.setAge(rs.getInt("age"));
 				s.setDepartment(rs.getString("department"));
 				s.setEmail(rs.getString("email"));
 				s.setAddress(rs.getString("address"));
 				s.setPassword(rs.getString("password"));
 				s.setGrade(rs.getString("grade"));
-	            staff.add(s);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return staff;
+				staff.add(s);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return staff;
 	}
 	
-	/*public StaffBean getProductById(int productId) {
-		StaffBean product = new StaffBean();
+	public StaffBean getStaffById(String id) {
+		StaffBean staff = new StaffBean();
+		try {
+			currentCon = ConnectionManager.getConnection();
+			ps=currentCon.prepareStatement("select * from staff where id=?");
+
+			ps.setString(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {	            
+				staff.setId(rs.getString("id"));
+				staff.setName(rs.getString("name"));
+				staff.setAge(rs.getInt("age"));
+				staff.setDepartment(rs.getString("department"));
+				staff.setEmail(rs.getString("email"));
+				staff.setAddress(rs.getString("address"));
+				staff.setPassword(rs.getString("password"));
+				staff.setGrade(rs.getString("grade"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return staff;
+	}
+	
+	//login
+	public static StaffBean login(StaffBean bean) throws NoSuchAlgorithmException {
+		
+	    String id = bean.getId();
+	    String password = bean.getPassword();
+	    
+	    String searchQuery = "select * from staff where id='" + id + "' AND password='" + password + "'"; 
+
+	    System.out.println("Your Id is " + id);
+	    System.out.println("Your Password is " + password);
+	    System.out.println("Query: " + searchQuery);
+
 	    try {
-	    	currentCon = ConnectionManager.getConnection();
-	        ps=currentCon.prepareStatement("select * from product where productId=?");
-	        
-	        ps.setInt(1, productId);
-	        ResultSet rs = ps.executeQuery();
-	        if (rs.next()) {	            
-	            product.setProductId(rs.getInt("productId"));
-	            product.setProductName(rs.getString("productName"));
-	            product.setPrice(rs.getDouble("price"));
-	            product.setQuantity(rs.getInt("quantity"));
-	            product.setRating(rs.getInt("rating"));
-	            product.setDescription(rs.getString("description"));
+	        currentCon = ConnectionManager.getConnection();
+	        stmt = currentCon.createStatement();
+	        rs = stmt.executeQuery(searchQuery);
+	        boolean more = rs.next();
+
+	        // if user exists set the isValid variable to true
+	        if (more) {
+	        	String name = rs.getString("name");
+	        	id = rs.getString("id");
+	       
+	       		System.out.println("Welcome " + name);
+	            bean.setId(id);
+	            bean.setValid(true);
+	       	}
+	       
+	        // if user does not exist set the isValid variable to false
+	        else if (!more) {
+	        	System.out.println("Sorry, you are not a registered user! Please sign up first");
+	        	bean.setValid(false);
 	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
+	       
 	    }
-	    return product;
-	}*/
+
+	    catch (Exception ex) {
+	        System.out.println("Log In failed: An Exception has occurred! " + ex);
+	    }
+
+	    finally {
+	        if (rs != null) {
+	            try {
+	                rs.close();
+	            } catch (Exception e) {
+	            }
+	            rs = null;
+	        }
+
+	        if (stmt != null) {
+	            try {
+	                stmt.close();
+	            } catch (Exception e) {
+	            }
+	            stmt = null;
+	        }
+
+	        if (currentCon != null) {
+	            try {
+	                currentCon.close();
+	            } catch (Exception e) {
+	            }
+
+	            currentCon = null;
+	        }
+	    }
+
+	    return bean;
+	}
 }
