@@ -9,7 +9,14 @@ public class StaffBean {
 	String address;
 	String password;
 	String grade;
+	Boolean valid;
 	
+	public Boolean getValid() {
+		return valid;
+	}
+	public void setValid(Boolean valid) {
+		this.valid = valid;
+	}
 	public String getId() {
 		return id;
 	}
