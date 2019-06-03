@@ -10,6 +10,7 @@ import javax.servlet.RequestDispatcher;
 import meylis.dao.StaffDAO;
 import meylis.model.StaffBean;
 
+
 /**
  * Servlet implementation class StaffController
  */
@@ -40,10 +41,16 @@ public class StaffController extends HttpServlet {
         	request.setAttribute("staff", d.getAllStaff());
         }
         if (action.equalsIgnoreCase("delete")){
-    	    String id = (request.getParameter("Id"));
+    	    String id = request.getParameter("Id");
             d.deleteStaff(id);
             forward = LIST;
             request.setAttribute("staff", d.getAllStaff());    
+    }
+        else if (action.equalsIgnoreCase("update")){
+    	    forward = UPDATE;
+    	    String id = request.getParameter("id");
+            StaffBean staff = d.getStaffById(id);
+            request.setAttribute("staff", staff);
     }
 
         RequestDispatcher view = request.getRequestDispatcher(forward);
@@ -67,7 +74,12 @@ public class StaffController extends HttpServlet {
 		if(Id == null || Id.isEmpty()){
 			d.add(staff);
 		}
-	    response.sendRedirect("listStaff.jsp");
+	    else { 
+	    	staff.setId(Id);
+	        d.updateStaff(staff);
+	    }
+	     
+	     response.sendRedirect("listStaff.jsp");
 	 }
 
 	}
