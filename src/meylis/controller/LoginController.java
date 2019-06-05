@@ -1,12 +1,15 @@
 package meylis.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.RequestDispatcher;
 
 import meylis.dao.StaffDAO;
 import meylis.model.StaffBean;
@@ -17,6 +20,8 @@ import meylis.model.StaffBean;
 @WebServlet("/LoginController")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static String ADMIN = "/adminProfile.jsp";
+	private static String MEMBER = "/memberProfile.jsp";
     private StaffDAO dao;
     HttpServletRequest request;
     HttpServletResponse response;
@@ -35,10 +40,11 @@ public class LoginController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		//action = request.getParameter("action");
+        String forward="";
+        String action = request.getParameter("action");
+
         	
 		System.out.println(request.getParameter("id"));
 		System.out.println(request.getParameter("password"));
@@ -48,13 +54,26 @@ public class LoginController extends HttpServlet {
     			staff.setId(request.getParameter("id"));
     			staff.setPassword(request.getParameter("password"));
 
-    			staff = StaffDAO.login(staff);
+
+    			staff = dao.login(staff);
 
     			if(staff.getValid()==true)
     			{
     				HttpSession session = request.getSession(true);
     				session.setAttribute("currentSessionstaff", staff.getId());
-    				response.sendRedirect("listStaff.jsp"); // logged-in page
+    				System.out.println(staff.getId());
+                    String id = staff.getId();
+                    staff = dao.getStaffById(id);
+                    session.setAttribute("staff", staff);
+    				System.out.println(staff.getGrade());
+    				if(staff.getGrade().equalsIgnoreCase("admin")) {
+    					forward = ADMIN;
+    				}
+    				else if(staff.getGrade().equalsIgnoreCase("member")){
+    					forward = MEMBER;
+    				}
+                    RequestDispatcher view = request.getRequestDispatcher(forward);
+                    view.forward(request, response);
     			}
     			else
     			{
