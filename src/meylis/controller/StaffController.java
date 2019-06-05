@@ -20,6 +20,7 @@ public class StaffController extends HttpServlet {
 	private static String LIST = "/listStaff.jsp";
 	private static String UPDATE = "/updateStaff.jsp";
 	private static String LOGIN = "/login.jsp";
+	private static String VIEW = "/viewStaff.jsp";
 	private StaffDAO d;
 
 
@@ -39,15 +40,27 @@ public class StaffController extends HttpServlet {
         	forward = LIST;
         	request.setAttribute("staff", d.getAllStaff());
         }
-        if (action.equalsIgnoreCase("delete")){
-    	    String id = (request.getParameter("Id"));
+        else if (action.equalsIgnoreCase("delete")){
+    	    String id = (request.getParameter("id"));
             d.deleteStaff(id);
             forward = LIST;
             request.setAttribute("staff", d.getAllStaff());    
-    }
-
-        RequestDispatcher view = request.getRequestDispatcher(forward);
-        view.forward(request, response);
+	    }
+        else if (action.equalsIgnoreCase("update")){
+    	    forward = UPDATE;
+    	    String id = request.getParameter("id");
+            StaffBean staff = d.getStaffById(id);
+            request.setAttribute("staff", staff);
+        }
+        else if (action.equalsIgnoreCase("view")) {
+        	forward = VIEW;
+        	String id = request.getParameter("id");
+            StaffBean staff = d.getStaffById(id);
+            request.setAttribute("staff", staff);
+        }
+	
+	        RequestDispatcher view = request.getRequestDispatcher(forward);
+	        view.forward(request, response);
 	}
 
 	/**
@@ -67,6 +80,10 @@ public class StaffController extends HttpServlet {
 		if(Id == null || Id.isEmpty()){
 			d.add(staff);
 		}
+		else{
+	         staff.setId(Id);
+	         d.updateStaff(staff);
+	    }
 	    response.sendRedirect("listStaff.jsp");
 	 }
 
