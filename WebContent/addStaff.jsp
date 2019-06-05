@@ -9,9 +9,11 @@ pageEncoding="ISO-8859-1"%>
 </head>
 <body>
 	<div class="navbar">
-		<a class="active" href="#home">Home</a>
-		<a href="#news">News</a>
-		<a href="#contact">Contact</a>
+		<a href="adminProfile.jsp">Home</a>
+		<a class="active" href="addStaff.jsp">Add Staff</a>
+		<a href="updateStaff.jsp">Update Staff</a>
+		<a href="listStaff.jsp">Staff Directory</a>
+		<a href="login.jsp">Logout</a>
 	</div>
 	<div class="homepage">
 		<div class="add">
