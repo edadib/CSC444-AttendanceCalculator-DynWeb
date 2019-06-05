@@ -68,8 +68,8 @@ public class StaffDAO {
 
 	public void deleteStaff(String id) {
 	    try {
-	    	currentCon = StaffConnection.getConnection();
-	    	ps=currentCon.prepareStatement("delete from STAFF where Id=?");
+	    	currentCon = ConnectionManager.getConnection();
+	    	ps=currentCon.prepareStatement("delete from STAFF where id=?");
 	        ps.setString(1, id);
 	        ps.executeUpdate();
 	    } catch (SQLException e) {
@@ -77,7 +77,7 @@ public class StaffDAO {
 	    }
 	}
 	
-	public void updateProduct(StaffBean bean) {
+	public void updateStaff(StaffBean bean) {
 		id = bean.getId();
 		name = bean.getName();
 		department = bean.getDepartment();
@@ -90,7 +90,7 @@ public class StaffDAO {
 		String searchQuery = "UPDATE staff SET name= '" + name + "', department='" + department+ "', age='" + age + "', email='" + email + "', address='" + address + "', password='" + password + "', grade='" + grade + "' WHERE id= '" + id + "'";
 		
 		try {
-	        currentCon = StaffConnection.getConnection();
+	        currentCon = ConnectionManager.getConnection();
 	        stmt = currentCon.createStatement();
 	        stmt.executeUpdate(searchQuery);
 	        
@@ -132,6 +132,7 @@ public class StaffDAO {
 
 			ps.setString(1, id);
 			ResultSet rs = ps.executeQuery();
+			
 			if (rs.next()) {	            
 				staff.setId(rs.getString("id"));
 				staff.setName(rs.getString("name"));
@@ -170,10 +171,12 @@ public class StaffDAO {
 	        if (more) {
 	        	String name = rs.getString("name");
 	        	id = rs.getString("id");
+	        	String grade = rs.getString("grade");
 	       
 	       		System.out.println("Welcome " + name);
 	            bean.setId(id);
 	            bean.setValid(true);
+	            bean.setGrade(grade);
 	       	}
 	       
 	        // if user does not exist set the isValid variable to false
