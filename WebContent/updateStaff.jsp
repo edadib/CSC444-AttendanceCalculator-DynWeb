@@ -7,13 +7,15 @@ pageEncoding="ISO-8859-1"%>
 <head>
 	<link href="css/style.css" rel="stylesheet">
 	<meta charset="ISO-8859-1">
-	<title>ADD STAFF</title>
+	<title>UPDATE STAFF</title>
 </head>
 <body>
 	<div class="navbar">
-		<a class="active" href="#home">Home</a>
-		<a href="#news">News</a>
-		<a href="#contact">Contact</a>
+		<a href="listStaff.jsp">Home</a>
+		<a href="addStaff.jsp">Add Staff</a>
+		<a class="active" href="updateStaff.jsp">Update Staff</a>
+		<a href="listStaff.jsp">Staff Directory</a>
+		<a href="login.jsp">Logout</a>
 	</div>
 	<div class="homepage">
 		<div class="add">
