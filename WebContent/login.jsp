@@ -11,7 +11,7 @@
 	<div class="login">
 		<img src="img/Logo222.png" alt="logo" width="300" height="75">
 		<h2>Log In</h2>
-		<form action="LoginController" method="get">
+		<form action="LoginController" method="post">
 		  STAFF ID :<br>
 		  <input type="text" name="id" >
 		   <br><br>
