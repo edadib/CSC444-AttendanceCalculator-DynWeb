@@ -9,6 +9,11 @@ pageEncoding="ISO-8859-1"%>
 	<title>Staff Directory</title>
 </head>
 <body>
+<%
+   if(session.getAttribute("staff")== null) {
+      response.sendRedirect("login.jsp");
+    }
+%> 
 	<div class="navbar">
 		<a href="listStaff.jsp">Home</a>
 		<a href="addStaff.jsp">Add Staff</a>
