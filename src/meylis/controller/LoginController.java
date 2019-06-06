@@ -77,7 +77,8 @@ public class LoginController extends HttpServlet {
     			}
     			else
     			{
-    				response.sendRedirect("login.jsp");
+    				HttpSession session = request.getSession(false);
+    				response.sendRedirect("error.jsp");
     			}
     			
     		}
