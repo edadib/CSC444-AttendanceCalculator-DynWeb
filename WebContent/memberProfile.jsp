@@ -11,10 +11,15 @@
 <title>My Profile</title>
 </head>
 <body>
+<%
+   if(session.getAttribute("staff")== null) {
+      response.sendRedirect("login.jsp");
+   }
+%> 
 	<div class="navbar">
 		<a class="active" href="memberProfile.jsp">Home</a>
 		<a href="updateInfo.jsp">Update Profile</a>
-		<a href="login.jsp">Logout</a>
+		<a href="logout.jsp">Logout</a>
 	</div>
 	<div class="homepage">
 		<div class="add">
