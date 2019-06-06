@@ -10,10 +10,15 @@ pageEncoding="ISO-8859-1"%>
 	<title>UPDATE DATA</title>
 </head>
 <body>
+<%
+   if(session.getAttribute("staff")== null) {
+      response.sendRedirect("login.jsp");
+   }
+%> 
 	<div class="navbar">
 		<a href="memberProfile.jsp">Home</a>
 		<a class="active" href="updateInfo.jsp">Update Profile</a>
-		<a href="login.jsp">Logout</a>
+		<a href="logout.jsp">Logout</a>
 	</div>
 	<div class="homepage">
 		<div class="add">
