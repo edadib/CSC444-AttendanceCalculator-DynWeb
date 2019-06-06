@@ -7,6 +7,7 @@
 <meta charset="ISO-8859-1">
 <title>Log In</title>
 </head>
+<body>
 <div class="homepage">
 	<div class="login">
 		<img src="img/Logo222.png" alt="logo" width="300" height="75">
