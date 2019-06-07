@@ -44,9 +44,17 @@ public class StaffDAO {
 			ps.setString(7,password);
 			ps.setString(8,grade);
 			ps.executeUpdate();
-			Statement stmt = currentCon.createStatement();
-			String sql = "INSERT INTO workhour(workid,monday,tuesday,wednesday,thursday,friday,saturday,sunday,total)VALUES('id',0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)";
-			stmt.executeUpdate(sql);
+			ps=currentCon.prepareStatement("insert into workhour(workid,monday,tuesday,wednesday,thursday,friday,saturday,sunday,total)values(?,?,?,?,?,?,?,?,?)");
+			ps.setString(1,id);
+			ps.setDouble(2,0.0);
+			ps.setDouble(3,0.0);
+			ps.setDouble(4,0.0);
+			ps.setDouble(5,0.0);			
+			ps.setDouble(6,0.0);
+			ps.setDouble(7,0.0);
+			ps.setDouble(8,0.0);
+			ps.setDouble(9,0.0);
+			ps.executeUpdate();
 		}
 		catch (Exception ex) {
 			System.out.println("failed: An Exception has occurred! " + ex);
