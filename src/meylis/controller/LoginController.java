@@ -60,7 +60,7 @@ public class LoginController extends HttpServlet {
     			if(staff.getValid()==true)
     			{
     				HttpSession session = request.getSession(true);
-    				session.setAttribute("currentSessionstaff", staff.getId());
+    				//session.setAttribute("currentSessionstaff", staff.getId());
     				System.out.println(staff.getId());
                     String id = staff.getId();
                     staff = dao.getStaffById(id);
